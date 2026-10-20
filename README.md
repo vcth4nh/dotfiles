@@ -40,7 +40,7 @@ Codex:
 
 Both apps keep machine-local state in the same file as their settings: Codex its per-project trust list, Claude its hooks and auto-mode environment. So this repo owns only the keys listed in `.chezmoitemplates/`: for each app, the base file plus the machine's profile file. `dot_claude/modify_settings.json` and `dot_codex/modify_private_config.toml` merge them into the live files and keep everything else.
 
-- A key that holds an object (`env`, `permissions`, `sandbox`, `enabledPlugins`, a TOML table) is merged one level deep: the repo sets the entries it lists, and the machine keeps its other entries. Lists and single values are replaced.
+- A key that holds an object (`env`, `permissions`, `sandbox`, a TOML table) is merged one level deep: the repo sets the entries it lists, and the machine keeps its other entries. Lists and single values are replaced.
 - Nothing is ever removed. An entry deleted from the repo, or set only by the profile a machine switched away from, stays on that machine until you delete it there.
 - When the owned entries already match, the file is left byte-for-byte as it is. When one differs, the file is rewritten with its keys sorted.
 - To change an owned entry, edit it in `.chezmoitemplates/` and run `chezmoi apply`. A change to it made from inside Claude or Codex is reverted at the next apply, and `chezmoi re-add` doesn't work on these two files.

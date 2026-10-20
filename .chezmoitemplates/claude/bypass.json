@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "deny": [
-      "Artifact"
-    ],
     "defaultMode": "bypassPermissions"
   },
   "sandbox": {
