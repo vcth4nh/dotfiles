@@ -1,0 +1,30 @@
+{
+  "env": {
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
+    "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKEN": "300000"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
+  "extraKnownMarketplaces": {
+    "vct-public": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/vcth4nh/vct-claude-marketplace.git"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "anti-slop@vct-public": true,
+    "codex-exec@vct-public": true,
+    "leak-check@vct-public": true,
+    "retrospect@vct-public": true
+  },
+  "tui": "fullscreen",
+  "autoCompactEnabled": true,
+  "idleCompaction": false,
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
+}

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Artifact"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "sandbox": {
+    "enabled": false
+  },
+  "skipDangerousModePermissionPrompt": true
+}

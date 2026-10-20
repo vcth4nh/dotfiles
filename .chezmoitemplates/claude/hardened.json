@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "deny": [
+      "Artifact"
+    ],
+    "defaultMode": "auto"
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true
+  }
+}

@@ -1,0 +1,51 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /*
+  Sets the repo-owned keys in ~/.codex/config.toml: the shared ones from
+  .chezmoitemplates/codex/base.toml plus the ones from this machine's profile
+  (codexProfile, chosen at `chezmoi init`). A table is merged one level deep,
+  both when the profile goes on top of base and when the result goes into the
+  live file: only the listed entries are set, and the machine keeps its other
+  entries. Every key the repo doesn't list (model, the per-project trust
+  list, Codex's own state tables, features) is machine-local and kept. When
+  the owned entries already match, the file is returned untouched.
+*/ -}}
+{{- if not (hasKey . "codexProfile") -}}
+{{-   fail "codexProfile is not set: run `chezmoi init` to choose a Codex profile" -}}
+{{- end -}}
+{{- $owned := dict -}}
+{{- range $fragment := list "base" .codexProfile -}}
+{{-   range $key, $value := includeTemplate (printf "codex/%s.toml" $fragment) $ | fromToml -}}
+{{-     $cur := index $owned $key -}}
+{{-     if and (kindIs "map" $value) (kindIs "map" $cur) -}}
+{{-       range $entry, $v := $value -}}
+{{-         $_ := set $cur $entry $v -}}
+{{-       end -}}
+{{-     else -}}
+{{-       $_ := set $owned $key $value -}}
+{{-     end -}}
+{{-   end -}}
+{{- end -}}
+{{- $live := dict -}}
+{{- if .chezmoi.stdin -}}
+{{-   $live = fromToml .chezmoi.stdin -}}
+{{- end -}}
+{{- $changed := false -}}
+{{- range $key, $value := $owned -}}
+{{-   $cur := index $live $key -}}
+{{-   if and (kindIs "map" $value) (kindIs "map" $cur) -}}
+{{-     range $entry, $v := $value -}}
+{{-       if not (and (hasKey $cur $entry) (deepEqual (index $cur $entry) $v)) -}}
+{{-         $changed = true -}}
+{{-         $live = setValueAtPath (list $key $entry) $v $live -}}
+{{-       end -}}
+{{-     end -}}
+{{-   else if not (and (hasKey $live $key) (deepEqual $cur $value)) -}}
+{{-     $changed = true -}}
+{{-     $live = setValueAtPath (list $key) $value $live -}}
+{{-   end -}}
+{{- end -}}
+{{- if $changed -}}
+{{-   toToml $live -}}
+{{- else -}}
+{{-   .chezmoi.stdin -}}
+{{- end -}}

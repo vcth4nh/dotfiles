@@ -1,0 +1,7 @@
+{{- /* Asked once per machine at `chezmoi init`; `chezmoi init --prompt` asks again with the current answers as defaults. */ -}}
+{{- $claudeProfile := promptChoiceOnce . "claudeProfile" "Claude Code profile" (list "hardened" "bypass") (get . "claudeProfile" | default "hardened") -}}
+{{- $codexProfile := promptChoiceOnce . "codexProfile" "Codex profile" (list "hardened" "bypass") (get . "codexProfile" | default "hardened") -}}
+
+[data]
+    claudeProfile = {{ $claudeProfile | quote }}
+    codexProfile = {{ $codexProfile | quote }}
