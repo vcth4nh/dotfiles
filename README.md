@@ -8,6 +8,9 @@ My macOS and Linux config, managed with [chezmoi](https://www.chezmoi.io/).
 | `~/.config/ccstatusline/settings.json` | `dot_config/ccstatusline/settings.json` | whole file |
 | `~/.claude/settings.json` | `.chezmoitemplates/claude/` | only the keys listed there |
 | `~/.codex/config.toml` | `.chezmoitemplates/codex/` | only the keys listed there |
+| `~/.config/kitty/` | `dot_config/kitty/` | whole files, macOS only |
+| `~/.ssh/config` | `private_dot_ssh/private_config.tmpl` | whole file, macOS + Linux/Windows with the key |
+| `~/.ssh/config.d/hosts` | `private_dot_ssh/private_config.d/encrypted_private_hosts.age` | whole file, encrypted, macOS + Linux/Windows with the key |
 
 ## Install
 
@@ -45,8 +48,20 @@ Both apps keep machine-local state in the same file as their settings: Codex its
 - When the owned entries already match, the file is left byte-for-byte as it is. When one differs, the file is rewritten with its keys sorted.
 - To change an owned entry, edit it in `.chezmoitemplates/` and run `chezmoi apply`. A change to it made from inside Claude or Codex is reverted at the next apply, and `chezmoi re-add` doesn't work on these two files.
 
+## kitty and ssh
+
+kitty is managed on macOS only. ssh is managed on macOS, and on Linux (Ubuntu, Debian, Kali) and Windows once the key below is in place; a machine without the key keeps its own ssh config. The ssh config points at Bitwarden's ssh agent on macOS only; elsewhere ssh uses its default agent and keys (on Windows, the OpenSSH agent service, which Bitwarden's desktop app can also provide).
+
+`~/.ssh/config` holds only the defaults for every host and pulls in `~/.ssh/config.d/*`. The host list itself, `~/.ssh/config.d/hosts`, names internal machines, so the repo stores it encrypted with [age](https://age-encryption.org) through chezmoi's built-in age. The key is `~/.config/chezmoi/key.txt`, which is not in this repo:
+
+- Keep a copy of the key in a password manager. Without it the host list can't be decrypted.
+- On a new machine, put the key in `~/.config/chezmoi/key.txt` (mode 600) before `chezmoi init --apply`. The key is three lines of text, so the machine doesn't need the password manager installed: paste it with `mkdir -p ~/.config/chezmoi && cat > ~/.config/chezmoi/key.txt`, or send it from a machine that has it with `ssh newbox 'mkdir -p ~/.config/chezmoi && umask 077 && cat > ~/.config/chezmoi/key.txt' < ~/.config/chezmoi/key.txt`.
+- On Windows the key goes in `%USERPROFILE%\.config\chezmoi\key.txt`. After copying it from the password manager, PowerShell can write it: `mkdir -Force $HOME\.config\chezmoi; Get-Clipboard | Set-Content $HOME\.config\chezmoi\key.txt`.
+- A machine without the key skips the host list instead of failing to decrypt it.
+- To change the hosts, edit `~/.ssh/config.d/hosts` and run `chezmoi add --encrypt ~/.ssh/config.d/hosts`. Keep backups outside `~/.ssh/config.d/`: ssh reads every file in it.
+
 ## Day to day
 
 - `chezmoi diff` shows what `chezmoi apply` would change.
-- `chezmoi re-add` copies tmux.conf or the ccstatusline settings back into the repo after you change them in place (ccstatusline's TUI rewrites its file).
+- `chezmoi re-add` copies tmux.conf, the ccstatusline settings, kitty.conf or `~/.ssh/config` back into the repo after you change them in place (ccstatusline's TUI rewrites its file).
 - `chezmoi update` pulls and applies on the other machines.

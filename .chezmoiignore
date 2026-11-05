@@ -1,1 +1,22 @@
 README.md
+
+{{- $hasKey := stat (joinPath .chezmoi.homeDir ".config/chezmoi/key.txt") }}
+
+{{- /* kitty is managed on macOS only. */}}
+{{ if ne .chezmoi.os "darwin" }}
+.config/kitty
+.config/kitty/**
+{{ end }}
+
+{{- /* ssh is managed on macOS, and on Linux (Ubuntu, Debian, Kali) and Windows once
+       the age key is in place, so a machine without the key keeps its own ssh config. */}}
+{{ if not (or (eq .chezmoi.os "darwin") (and (or (eq .chezmoi.os "linux") (eq .chezmoi.os "windows")) $hasKey)) }}
+.ssh
+.ssh/**
+{{ end }}
+
+{{- /* The ssh host list is encrypted. A machine without the key skips it
+       instead of failing to decrypt. */}}
+{{ if not $hasKey }}
+.ssh/config.d/hosts
+{{ end }}

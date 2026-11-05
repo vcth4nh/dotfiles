@@ -1,0 +1,12 @@
+{{- /* IdentityAgent points at the macOS socket of Bitwarden's ssh agent, so it is written on macOS only. Elsewhere ssh uses its default agent and keys. */ -}}
+# Managed with chezmoi (github.com/vcth4nh/dotfiles).
+# Host entries live in ~/.ssh/config.d/hosts, which the repo stores encrypted.
+Include ~/.ssh/config.d/*
+
+Host *
+  # Plain ssh from kitty would send TERM=xterm-kitty, which most servers lack.
+  # (kitten ssh and herdr --remote handle the terminal type themselves.)
+  SetEnv TERM=xterm-256color
+{{- if eq .chezmoi.os "darwin" }}
+  IdentityAgent ~/Library/Containers/com.bitwarden.desktop/Data/.bitwarden-ssh-agent.sock
+{{- end }}

@@ -2,6 +2,14 @@
 {{- $claudeProfile := promptChoiceOnce . "claudeProfile" "Claude Code profile" (list "hardened" "bypass") (get . "claudeProfile" | default "hardened") -}}
 {{- $codexProfile := promptChoiceOnce . "codexProfile" "Codex profile" (list "hardened" "bypass") (get . "codexProfile" | default "hardened") -}}
 
+# Files added with `chezmoi add --encrypt` (the ssh host list) are encrypted with age,
+# using chezmoi's built-in age. The key is not in this repo, see README.md.
+encryption = "age"
+
+[age]
+    identity = "~/.config/chezmoi/key.txt"
+    recipient = "age1drxxqe9e2reqxxa4qaqj3c99hhyjncewu8sz8aygqcqggc88j9gq26wcy2"
+
 [data]
     claudeProfile = {{ $claudeProfile | quote }}
     codexProfile = {{ $codexProfile | quote }}
