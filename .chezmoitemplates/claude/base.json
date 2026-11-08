@@ -18,7 +18,8 @@
       "source": {
         "source": "git",
         "url": "https://github.com/vcth4nh/vct-claude-marketplace.git"
-      }
+      },
+      "autoUpdate": true
     }
   },
   "tui": "fullscreen",

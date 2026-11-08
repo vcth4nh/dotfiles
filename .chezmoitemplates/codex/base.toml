@@ -1,5 +1,9 @@
 model_reasoning_effort = "max"
 
+[marketplaces.vct-public]
+source_type = "git"
+source = "https://github.com/vcth4nh/vct-claude-marketplace.git"
+
 [tui]
 screen_reader_detection_done = true
 status_line = ["model-with-reasoning", "context-window-size", "context-used", "five-hour-limit", "weekly-limit", "thread-name", "current-dir"]

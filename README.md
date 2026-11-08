@@ -47,6 +47,7 @@ Both apps keep machine-local state in the same file as their settings: Codex its
 - Nothing is ever removed. An entry deleted from the repo, or set only by the profile a machine switched away from, stays on that machine until you delete it there.
 - When the owned entries already match, the file is left byte-for-byte as it is. When one differs, the file is rewritten with its keys sorted.
 - To change an owned entry, edit it in `.chezmoitemplates/` and run `chezmoi apply`. A change to it made from inside Claude or Codex is reverted at the next apply, and `chezmoi re-add` doesn't work on these two files.
+- Both base files register the `vct-public` plugin marketplace ([vct-claude-marketplace](https://github.com/vcth4nh/vct-claude-marketplace)). Claude Code refreshes it on its own (`autoUpdate`). Codex has no automatic refresh for a configured marketplace: after the first apply, run `codex plugin marketplace upgrade` to fetch it (until then `codex plugin list` reports it as missing), and run the same command to pull later updates.
 
 ## kitty and ssh
 
