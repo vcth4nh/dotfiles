@@ -1,6 +1,5 @@
 {
   "env": {
-    "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "CLAUDE_CODE_IDLE_COMPACT_MIN_TOKEN": "512000"
   },
   "attribution": {
