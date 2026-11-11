@@ -27,8 +27,8 @@
         "id": "92531112-3fd1-4480-8a0d-03eab09576f0",
         "type": "context-length",
         "backgroundColor": "bgWhite",
-        "merge": true,
-        "rawValue": true
+        "rawValue": true,
+        "merge": true
       },
       {
         "id": "4fa472b2-03b6-4e95-8ec9-9ca505c25e95",
@@ -128,14 +128,14 @@
       }
     ]
   ],
-  "flexMode": "full-minus-40",
-  "compactThreshold": 60,
   "colorLevel": 2,
   "defaultPadding": " ",
   "defaultPaddingSide": "both",
   "inheritSeparatorColors": false,
   "globalBold": false,
   "gitCacheTtlSeconds": 5,
+  "terminalWidthCacheTtlSeconds": 5,
+  "customCommandCacheTtlSeconds": 0,
   "minimalistMode": false,
   "powerline": {
     "enabled": true,
@@ -154,5 +154,9 @@
     "theme": "nord",
     "autoAlign": false,
     "continueThemeAcrossLines": false
+  },
+  "installation": {
+    "method": "pinned",
+    "installedVersion": "2.2.34"
   }
 }
